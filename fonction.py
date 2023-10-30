@@ -1,6 +1,6 @@
 def vector_init(list_reac, list_type, compos):
-    """ Fonction d'initialisation des vecteurs h et nu"""
-    h={}
+    """ Fonction d'initialisation des vecteurs list_comp et nu"""
+    list_comp={}
     nu={}
     for i in range(len(list_reac)):
         print("\n num de reaction = "+str(i)+"")
@@ -12,9 +12,9 @@ def vector_init(list_reac, list_type, compos):
 
         isnum=0
         if list_type[i] == "binaire":
-            h[i] = [compos_reac[0], compos_reac[1]]
+            list_comp[i] = [compos_reac[0], compos_reac[1]]
         elif list_type[i] == "unaire":
-            h[i] = [compos_reac[0]]
+            list_comp[i] = [compos_reac[0]]
         else:
             print("type de reaction non reconnue")
             exit(2)
@@ -38,12 +38,12 @@ def vector_init(list_reac, list_type, compos):
                 else:
                     nu[i][cg] +=  0.
                 num+=1
-    print("\nles listes de réactifs (h) pour chaque reaction")
-    print(h)
+    print("\nles listes de réactifs (list_comp) pour chaque reaction")
+    print(list_comp)
     print("les coefficients stoechiométriques (nu) pour chaque reaction")
     print(nu)
 
-    return h, nu
+    return list_comp, nu
 
 
 def pmc_init(Nmc, compos, eta):

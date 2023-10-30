@@ -41,8 +41,8 @@ for c in compos:
 print("conditions initiales des espèces")
 print(eta)
 
-# initialisation dess vecteurs h et nu
-h, nu = vector_init(list_reac, list_type, compos)
+# initialisation dess vecteurs list_comp et nu
+list_comp, nu = vector_init(list_reac, list_type, compos)
 
 # population de particules représentant la condition initiale
 PMC = pmc_init(Nmc, compos, eta)
@@ -78,7 +78,7 @@ while tps < temps_final:
           sig = 0.
           for i in range(len(list_reac)):
               prod = 1.
-              for H in h[i]:
+              for H in list_comp[i]:
                   prod *= pmc["densities"][H]
 
               exposant = 1
@@ -111,7 +111,7 @@ while tps < temps_final:
               proba = 0.
               for i in range(len(list_reac)-1):
                   prod = 1.
-                  for H in h[i]:
+                  for H in list_comp[i]:
                       prod *= pmc["densities"][H]
 
                   exposant = 1
