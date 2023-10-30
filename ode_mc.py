@@ -82,11 +82,11 @@ print(nu)
 # population de particules représentant la condition initiale
 PMC=[]
 for nmc in range(Nmc):
-    w=1. / Nmc
+    Weight=1. / Nmc
     eta_nmc={}
     for c in compos:
         eta_nmc[c] = eta[c]
-    pmc = {"weight" : w, "densities" : eta_nmc}
+    pmc = {"weight" : Weight, "densities" : eta_nmc}
     PMC.append(pmc)
 
 #entete du fichier
