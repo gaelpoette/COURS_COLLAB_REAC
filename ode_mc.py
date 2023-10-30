@@ -6,6 +6,7 @@ from string import *
 import os
 import random
 
+random.seed(42)  # Fixe la graine à la valeur 42
 
 # importation des paramètres
 from param import *
