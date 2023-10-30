@@ -5,8 +5,8 @@ from math import *
 from string import *
 import os
 import random
-import sys 
-sys.path.append('./fich_cas_test')
+#import sys 
+#sys.path.append('./fich_cas_test')
 from param import *
 import matplotlib.pyplot as plt
 import numpy as np
