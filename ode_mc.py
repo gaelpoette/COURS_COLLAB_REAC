@@ -1,5 +1,5 @@
 #!/usr/bin/python
-# -*- coding: iso-8859-1 -*-
+# -*- coding: utf-8 -*-
 
 from math import *
 from string import *
@@ -8,6 +8,11 @@ import random
 import sys 
 sys.path.append('./fich_cas_test')
 from param import *
+import matplotlib.pyplot as plt
+import numpy as np
+from fonction import * 
+
+random.seed(42)  # Fixe la graine à la valeur 42
 
 # importation des paramètres
 if(sig_r_0<0 or sig_r_1<0 or sig_r_2<0):
@@ -42,57 +47,11 @@ for c in compos:
 print("conditions initiales des espèces")
 print(eta)
 
-h={}
-nu={}
-for i in range(len(list_reac)):
-    print("\n num de reaction = "+str(i)+"")
-    reac = list_reac[i]
-    compos_reac = (reac.split(' '))
-    print(compos_reac)
-    # recuperation du vecteur des reactifs
-    print("type de reaction: "+list_type[i]+"")
+# initialisation dess vecteurs h et nu
+h, nu = vector_init(list_reac, list_type, compos)
 
-    isnum=0
-    if list_type[i] == "binaire":
-          h[i] = [compos_reac[0], compos_reac[1]]
-    elif list_type[i] == "unaire":
-          h[i] = [compos_reac[0]]
-    else:
-          print("type de reaction non reconnue")
-          exit(2)
-
-    #recuperation des vecteurs de coefficients stoechiométriques pour chaque reactions
-    nu[i]={}
-    #print compos
-    for cg in compos:
-        nu[i][cg] = 0.
-        num = 0
-        for c in compos_reac:
-          isnum=0
-          if list_type[i] == "binaire":
-              isnum = (num == 0 or num == 1)
-          if list_type[i] == "unaire":
-              isnum = (num == 0)
-          if c == cg and (isnum): #réactions à 2 réactifs
-              nu[i][cg] += -1.
-          if c == cg and (not isnum): #réactions à 2 réactifs
-              nu[i][cg] +=  1.
-          else:
-              nu[i][cg] +=  0.
-          num+=1
-print("\nles listes de réactifs (h) pour chaque reaction")
-print(h)
-print("les coefficients stoechiométriques (nu) pour chaque reaction")
-print(nu)
 # population de particules représentant la condition initiale
-PMC=[]
-for nmc in range(Nmc):
-    w=1. / Nmc
-    eta_nmc={}
-    for c in compos:
-        eta_nmc[c] = eta[c]
-    pmc = {"weight" : w, "densities" : eta_nmc}
-    PMC.append(pmc)
+PMC = pmc_init(Nmc, compos, eta)
 
 #entete du fichier
 cmd="\n"+"#temps"+" "
@@ -184,18 +143,45 @@ output = open("rez.txt",'w')
 output.write(cmd)
 output.close()
 
-cmd_gnu="set sty da l;set grid; set xl 'time'; set yl 'densities of the species'; plot "
-i=3
-cmd_gnu+="'rez.txt' lt 1 w lp  t '"+str(compos[0])+"'"
-for c in compos:
-   if not(c==compos[0]):
-     cmd_gnu+=",'' u 1:"+str(i)+" lt "+str(i)+" w lp t '"+str(compos[i-2])+"'"
-     i+=1
 
-cmd_gnu+=";pause -1"
-output = open("gnu.plot",'w')
-output.write(cmd_gnu)
-output.close()
+######################### Plot GNU ###################################
 
-os.system("gnuplot gnu.plot")
+if gnuplot:
+    cmd_gnu="set sty da l;set grid; set xl 'time'; set yl 'densities of the species'; plot "
+    i=3
+    cmd_gnu+="'rez.txt' lt 1 w lp  t '"+str(compos[0])+"'"
+    for c in compos:
+        if not(c==compos[0]):
+            cmd_gnu+=",'' u 1:"+str(i)+" lt "+str(i)+" w lp t '"+str(compos[i-2])+"'"
+            i+=1
+
+    cmd_gnu+=";pause -1"
+    output = open("gnu.plot",'w')
+    output.write(cmd_gnu)
+    output.close()
+
+    os.system("gnuplot gnu.plot")
+
+######################### Plot Matplotlib ############################
+
+else:
+    # Charger les données depuis 'rez.txt'
+    data = np.loadtxt('rez.txt')
+
+    # Créer une figure et un axe
+    fig, ax = plt.subplots()
+
+    # Configurer l'axe
+    ax.set_xlabel('time')
+    ax.set_ylabel('densities of the species')
+    ax.grid(True)
+    # Dessiner chaque colonne de données en tant que série distincte
+    for i, c in enumerate(compos):
+        ax.plot(data[:, 0], data[:, i+1], 'o-', label=c)
+
+    # Afficher la légende
+    ax.legend(loc='best')
+
+    # Enregistrer la figure en tant qu'image
+    fig.savefig('output.png')
 
