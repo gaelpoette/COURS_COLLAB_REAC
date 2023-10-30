@@ -1,0 +1,1 @@
+set sty da l;set grid; set xl 'time'; set yl 'densities of the species'; plot 'rez.txt' lt 1 w lp  t 'e^-','' u 1:3 lt 3 w lp t 'Ar','' u 1:4 lt 4 w lp t 'B','' u 1:5 lt 5 w lp t 'C','' u 1:6 lt 6 w lp t 'K','' u 1:7 lt 7 w lp t 'L';pause -1
