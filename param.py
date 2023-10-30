@@ -1,5 +1,5 @@
-# Selection du type de plot
-gnuplot = False
+#Type de plot : Gnuplot ou matplotlib
+gnuplot = True
 # PARAM: nb de particules MC
 Nmc=10
 # PARAM: Volume
