@@ -44,3 +44,18 @@ def vector_init(list_reac, list_type, compos):
     print(nu)
 
     return h, nu
+
+
+def pmc_init(Nmc, compos, eta):
+    """création de la population de particules représentant la condition initiale"""
+
+    PMC=[]
+    for nmc in range(Nmc):
+        w=1. / Nmc
+        eta_nmc={}
+        for c in compos:
+            eta_nmc[c] = eta[c]
+        pmc = {"weight" : w, "densities" : eta_nmc}
+        PMC.append(pmc)
+
+    return PMC
