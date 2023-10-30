@@ -1,3 +1,5 @@
+# Selection du type de plot
+gnuplot = False
 # PARAM: nb de particules MC
 Nmc=10
 # PARAM: Volume
