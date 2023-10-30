@@ -5,6 +5,9 @@ from math import *
 from string import *
 import os
 import random
+import sys 
+sys.path.append('./fich_cas_test')
+from param import *
 import matplotlib.pyplot as plt
 import numpy as np
 from fonction import * 
@@ -12,10 +15,13 @@ from fonction import *
 random.seed(42)  # Fixe la graine à la valeur 42
 
 # importation des paramètres
-from param import *
+if(sig_r_0<0 or sig_r_1<0 or sig_r_2<0):
+    print("ATTENTION! Les constantes de reaction doivent etre positif")
+    exit(1)
 
 print("liste des reactions")
 print(list_reac)
+
 if (not(len(list_reac)==len(list_sigr))):
   print("ATTENTION! LES LISTES DOIVENT AVOIR LA MEME TAILLE!")
   exit(1)
