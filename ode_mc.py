@@ -18,8 +18,22 @@ if (not(len(list_reac)==len(list_sigr))):
 
 # lecture de la liste des compositions des réactions
 compos=[]
+list_type=[]
 for i in range(len(list_reac)): 
-  compos_reac=(list_reac[i].split(' '))
+  reactifs_et_produits = list_reac[i].split('->')
+  reactifs = reactifs_et_produits[0].strip()
+  produits = reactifs_et_produits[1].strip()
+  nombre_de_reactifs = len(reactifs.split(' '))
+  if (nombre_de_reactifs == 1):
+    list_type.append("unaire")
+  elif (nombre_de_reactifs == 2):
+    list_type.append("binaire")
+  else:
+    print("type de reaction non reconnue")
+    exit(2)
+
+  compos_reac = reactifs.split(' ') + produits.split(' ')
+  print(compos_reac)
   for j in range(len(compos_reac)):
      if not(compos_reac[j] in compos):
        compos.append(compos_reac[j])
@@ -52,9 +66,6 @@ for i in range(len(list_reac)):
           h[i] = [compos_reac[0], compos_reac[1]]
     elif list_type[i] == "unaire":
           h[i] = [compos_reac[0]]
-    else:
-          print("type de reaction non reconnue")
-          exit(2)
 
     #recuperation des vecteurs de coefficients stoechiométriques pour chaque reactions
     nu[i]={}
