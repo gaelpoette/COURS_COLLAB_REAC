@@ -130,10 +130,10 @@ while tps < temps_final:
               sig+= list_sigr[i] / volr * prod
 
           #tirage du temps de la prochaine reaction
-          U = random.random()
+          Urand = random.random()
           tau = 1.e32
           if sig > 0.:
-              tau = - log(U) / sig
+              tau = - log(Urand) / sig
 
           # temps courant updaté
           tps_cur += tau
@@ -147,7 +147,7 @@ while tps < temps_final:
 
           else:
               #reaction
-              U = random.random()
+              Urand = random.random()
 
               reac = len(list_reac)-1
               proba = 0.
@@ -162,7 +162,7 @@ while tps < temps_final:
                   volr = vol **exposant
                   proba+= list_sigr[i] / volr * prod
 
-                  if U * sig < proba:
+                  if Urand * sig < proba:
                       reac = i
                       break
 
