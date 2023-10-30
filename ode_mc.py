@@ -5,10 +5,14 @@ from math import *
 from string import *
 import os
 import random
+import matplotlib.pyplot as plt
+import numpy as np
 
 
 # importation des paramètres
 from param import *
+
+random.seed(42)  # Fixe la graine à la valeur 42
 
 print("liste des reactions")
 print(list_reac)
@@ -179,18 +183,45 @@ output = open("rez.txt",'w')
 output.write(cmd)
 output.close()
 
-cmd_gnu="set sty da l;set grid; set xl 'time'; set yl 'densities of the species'; plot "
-i=3
-cmd_gnu+="'rez.txt' lt 1 w lp  t '"+str(compos[0])+"'"
-for c in compos:
-   if not(c==compos[0]):
-     cmd_gnu+=",'' u 1:"+str(i)+" lt "+str(i)+" w lp t '"+str(compos[i-2])+"'"
-     i+=1
 
-cmd_gnu+=";pause -1"
-output = open("gnu.plot",'w')
-output.write(cmd_gnu)
-output.close()
+######################### Plot GNU ###################################
 
-os.system("gnuplot gnu.plot")
+if gnuplot:
+    cmd_gnu="set sty da l;set grid; set xl 'time'; set yl 'densities of the species'; plot "
+    i=3
+    cmd_gnu+="'rez.txt' lt 1 w lp  t '"+str(compos[0])+"'"
+    for c in compos:
+        if not(c==compos[0]):
+            cmd_gnu+=",'' u 1:"+str(i)+" lt "+str(i)+" w lp t '"+str(compos[i-2])+"'"
+            i+=1
+
+    cmd_gnu+=";pause -1"
+    output = open("gnu.plot",'w')
+    output.write(cmd_gnu)
+    output.close()
+
+    os.system("gnuplot gnu.plot")
+
+######################### Plot Matplotlib ############################
+
+else:
+    # Charger les données depuis 'rez.txt'
+    data = np.loadtxt('rez.txt')
+
+    # Créer une figure et un axe
+    fig, ax = plt.subplots()
+
+    # Configurer l'axe
+    ax.set_xlabel('time')
+    ax.set_ylabel('densities of the species')
+    ax.grid(True)
+    # Dessiner chaque colonne de données en tant que série distincte
+    for i, c in enumerate(compos):
+        ax.plot(data[:, 0], data[:, i+1], 'o-', label=c)
+
+    # Afficher la légende
+    ax.legend(loc='best')
+
+    # Enregistrer la figure en tant qu'image
+    fig.savefig('output.png')
 
