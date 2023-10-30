@@ -7,12 +7,12 @@ import os
 import random
 import matplotlib.pyplot as plt
 import numpy as np
+from fonction import * 
 
+random.seed(42)  # Fixe la graine à la valeur 42
 
 # importation des paramètres
 from param import *
-from fonction import *
-
 
 print("liste des reactions")
 print(list_reac)
@@ -41,9 +41,48 @@ for c in compos:
 print("conditions initiales des espèces")
 print(eta)
 
-# initialisation dess vecteurs h et nu
-h, nu = vector_init(list_reac, list_type, compos)
+h={}
+nu={}
+for i in range(len(list_reac)):
+    print("\n num de reaction = "+str(i)+"")
+    reac = list_reac[i]
+    compos_reac = (reac.split(' '))
+    print(compos_reac)
+    # recuperation du vecteur des reactifs
+    print("type de reaction: "+list_type[i]+"")
 
+    isnum=0
+    if list_type[i] == "binaire":
+          h[i] = [compos_reac[0], compos_reac[1]]
+    elif list_type[i] == "unaire":
+          h[i] = [compos_reac[0]]
+    else:
+          print("type de reaction non reconnue")
+          exit(2)
+
+    #recuperation des vecteurs de coefficients stoechiométriques pour chaque reactions
+    nu[i]={}
+    #print compos
+    for cg in compos:
+        nu[i][cg] = 0.
+        num = 0
+        for c in compos_reac:
+          isnum=0
+          if list_type[i] == "binaire":
+              isnum = (num == 0 or num == 1)
+          if list_type[i] == "unaire":
+              isnum = (num == 0)
+          if c == cg and (isnum): #réactions à 2 réactifs
+              nu[i][cg] += -1.
+          if c == cg and (not isnum): #réactions à 2 réactifs
+              nu[i][cg] +=  1.
+          else:
+              nu[i][cg] +=  0.
+          num+=1
+print("\nles listes de réactifs (h) pour chaque reaction")
+print(h)
+print("les coefficients stoechiométriques (nu) pour chaque reaction")
+print(nu)
 # population de particules représentant la condition initiale
 PMC = pmc_init(Nmc, compos, eta)
 

@@ -9,8 +9,10 @@ import matplotlib.pyplot as plt
 import numpy as np
 
 
-os.chdir("BNR/test_repro")
 os.system("cp param.py ../../..")
-os.system("python3 script.py")
-os.chdir("..")
+os.system("python3 ../../../ode_mc.py")
+os.system("cp rez.txt rez1.txt")
+os.system("python3 ../../../ode_mc.py")
+os.system("meld rez.txt rez1.txt")
+
 
