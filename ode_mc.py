@@ -84,18 +84,7 @@ print(h)
 print("les coefficients stoechiométriques (nu) pour chaque reaction")
 print(nu)
 # population de particules représentant la condition initiale
-<<<<<<< HEAD
-PMC=[]
-for nmc in range(Nmc):
-    Weight=1. / Nmc
-    eta_nmc={}
-    for c in compos:
-        eta_nmc[c] = eta[c]
-    pmc = {"weight" : Weight, "densities" : eta_nmc}
-    PMC.append(pmc)
-=======
 PMC = pmc_init(Nmc, compos, eta)
->>>>>>> 5dd2b31619a796d782573602ba49ae54f32850cc
 
 #entete du fichier
 cmd="\n"+"#temps"+" "
