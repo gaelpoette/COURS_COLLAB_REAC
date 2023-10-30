@@ -12,8 +12,6 @@ import numpy as np
 # importation des paramètres
 from param import *
 
-random.seed(42)  # Fixe la graine à la valeur 42
-
 print("liste des reactions")
 print(list_reac)
 if (not(len(list_reac)==len(list_sigr))):
