@@ -26,29 +26,10 @@ if (not(len(list_reac)==len(list_sigr))):
   print("ATTENTION! LES LISTES DOIVENT AVOIR LA MEME TAILLE!")
   exit(1)
 
-# lecture de la liste des compositions des réactions
-compos=[]
-for i in range(len(list_reac)): 
-  compos_reac=(list_reac[i].split(' '))
-  for j in range(len(compos_reac)):
-     if not(compos_reac[j] in compos):
-       compos.append(compos_reac[j])
-
-print("liste des especes")
-print(compos)
 
 #"conditions initiales en eta codée en dur pour l'instant
-eta={}
-for c in compos:
-    eta[c]=0.
-    if c=="Ar" or c=="e^-":
-      eta[c] = 1. * vol
-	
-print("conditions initiales des espèces")
-print(eta)
-
-# initialisation dess vecteurs h et nu
-h, nu = vector_init(list_reac, list_type, compos)
+# remlissage de compos et initialisation des vecteurs eta, h et nu
+eta, h, nu, compos = vector_init(list_reac, list_type, vol)
 
 # population de particules représentant la condition initiale
 PMC = pmc_init(Nmc, compos, eta)
