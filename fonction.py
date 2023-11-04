@@ -1,5 +1,25 @@
-def vector_init(list_reac, list_type, compos):
-    """ Fonction d'initialisation des vecteurs h et nu"""
+def vector_init(list_reac, list_type, vol):
+    """ Fonction de remlissage de compos et d'initialisation des vecteurs eta, h et nu"""
+
+    compos=[]
+    for i in range(len(list_reac)): 
+        compos_reac=(list_reac[i].split(' '))
+        for j in range(len(compos_reac)):
+            if not(compos_reac[j] in compos):
+                compos.append(compos_reac[j])
+
+    print("liste des especes")
+    print(compos)
+
+    eta={}
+    for c in compos:
+        eta[c]=0.
+        if c=="Ar" or c=="e^-":
+            eta[c] = 1. * vol
+        
+    print("conditions initiales des espèces")
+    print(eta)
+
     h={}
     nu={}
     for i in range(len(list_reac)):
@@ -43,7 +63,7 @@ def vector_init(list_reac, list_type, compos):
     print("les coefficients stoechiométriques (nu) pour chaque reaction")
     print(nu)
 
-    return h, nu
+    return eta, h, nu, compos
 
 
 def pmc_init(Nmc, compos, eta):

@@ -14,5 +14,4 @@ os.system("python3 ../../../ode_mc.py")
 os.system("cp rez.txt rez1.txt")
 os.system("python3 ../../../ode_mc.py")
 os.system("meld rez.txt rez1.txt")
-
-
+os.system("rm -f rez.txt rez1.txt gnu.plot")
