@@ -97,28 +97,32 @@ while tps < temps_final:
                   eta[ci] += pmc["densities"][ci] * pmc["weight"]
 
           else:
-              #reaction
-              Urand = random.random()
+            # Fonction de tirages de réactions:
+            def reaction(list_reac, h, list_type, list_sigr, sig):
+                U = random.random()
 
-              reac = len(list_reac)-1
-              proba = 0.
-              for it in range(len(list_reac)-1):
-                  prod = 1.
-                  for Hi in hn[it]:
-                      prod *= pmc["densities"][Hi]
+                reac = len(list_reac)-1
+                proba = 0.
+                for i in range(len(list_reac)-1):
+                    prod = 1.
+                    for H in h[i]:
+                        prod *= pmc["densities"][H]
 
-                  exposant = 1
-                  if list_type[it] == "unaire":
-                      exposant = 0
-                  volr = vol **exposant
-                  proba+= list_sigr[it] / volr * prod
+                    exposant = 1
+                    if list_type[i] == "unaire":
+                        exposant = 0
+                    volr = vol **exposant
+                    proba+= list_sigr[i] / volr * prod
 
-                  if Urand * sig < proba:
-                      reac = it
-                      break
+                    if U * sig < proba:
+                        reac = i
+                        break
 
-              for ci in compos:
-                  pmc["densities"][ci]+=nu[reac][ci]
+                return reac
+
+            reac = reaction(list_reac, h, list_type, list_sigr, sig) 
+            for c in compos:
+                  pmc["densities"][c]+=nu[reac][c]         
 
   tps+=dt
   cmdt=""+str(tps)+" "
