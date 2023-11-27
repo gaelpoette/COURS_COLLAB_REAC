@@ -26,6 +26,12 @@ if (not(len(list_reac)==len(list_sigr))):
   print("ATTENTION! LES LISTES DOIVENT AVOIR LA MEME TAILLE!")
   exit(1)
 
+# Traiter le cas où les constantes de réaction sont négatives (Jabir)
+for i in range (len(list_sigr)):
+    if (list_sigr[i]<0):
+      print("Une des constantes de réaction est négative")
+      list_sigr[i]= abs(list_sigr[i])
+
 
 #"conditions initiales en eta codée en dur pour l'instant
 # remlissage de compos et initialisation des vecteurs eta, h et nu
