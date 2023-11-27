@@ -12,7 +12,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 from fonction import * 
 
-random.seed(42)  # Fixe la graine à la valeur 42
+random.seed(49)  # Fixe la graine à la valeur 42
 
 # importation des paramètres
 if(sig_r_0<0 or sig_r_1<0 or sig_r_2<0):
