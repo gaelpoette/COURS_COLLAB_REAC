@@ -5,33 +5,36 @@ from math import *
 from string import *
 import os
 import random
+#import sys 
+#sys.path.append('./fich_cas_test')
+from param import *
 import matplotlib.pyplot as plt
 import numpy as np
 from fonction import * 
 
-random.seed(42)  # Fixe la graine à la valeur 42
+random.seed(49)  # Fixe la graine à la valeur 42
 
 # importation des paramètres
-from param import *
+if(sig_r_0<0 or sig_r_1<0 or sig_r_2<0):
+    print("ATTENTION! Les constantes de reaction doivent etre positif")
+    exit(1)
 
 print("liste des reactions")
 print(list_reac)
+
 if (not(len(list_reac)==len(list_sigr))):
   print("ATTENTION! LES LISTES DOIVENT AVOIR LA MEME TAILLE!")
   exit(1)
 
-# lecture de la liste des compositions des réactions
-compos=[]
-for i in range(len(list_reac)): 
-  compos_reac=(list_reac[i].split(' '))
-  for j in range(len(compos_reac)):
-     if not(compos_reac[j] in compos):
-       compos.append(compos_reac[j])
+# Traiter le cas où les constantes de réaction sont négatives (Jabir)
+for i in range (len(list_sigr)):
+    if (list_sigr[i]<0):
+      print("Une des constantes de réaction est négative")
+      list_sigr[i]= abs(list_sigr[i])
 
-print("liste des especes")
-print(compos)
 
 #"conditions initiales en eta codée en dur pour l'instant
+<<<<<<< HEAD
 eta={}
 for c in compos:
     eta[c]=0.
@@ -43,20 +46,24 @@ print(eta)
 
 # initialisation dess vecteurs list_comp et nu
 list_comp, nu = vector_init(list_reac, list_type, compos)
+=======
+# remlissage de compos et initialisation des vecteurs eta, h et nu
+eta, hn, nu, compos = vector_init(list_reac, list_type, vol)
+>>>>>>> 726e8b751aa1580ebda3e781eb754f643e8554f7
 
 # population de particules représentant la condition initiale
 PMC = pmc_init(Nmc, compos, eta)
 
 #entete du fichier
 cmd="\n"+"#temps"+" "
-for c in compos:
- cmd+=str(c)+" "
+for ci in compos:
+ cmd+=str(ci)+" "
 
 it=0
 tps = 0.
 cmd+="\n"+str(tps)+" "
-for c in compos:
- cmd+=str(eta[c]/vol)+" "
+for ci in compos:
+ cmd+=str(eta[ci]/vol)+" "
 
 print("\n début du calcul")
 
@@ -65,8 +72,8 @@ while tps < temps_final:
   dt = temps[it+1]-temps[it]
 
   # initialisation du tableau de tallies
-  for c in compos:
-      eta[c] = 0.
+  for ci in compos:
+      eta[ci] = 0.
 
   for pmc in PMC:
     
@@ -76,22 +83,27 @@ while tps < temps_final:
 
           # section efficace totale
           sig = 0.
-          for i in range(len(list_reac)):
+          for it in range(len(list_reac)):
               prod = 1.
+<<<<<<< HEAD
               for H in list_comp[i]:
                   prod *= pmc["densities"][H]
+=======
+              for Hi in hn[it]:
+                  prod *= pmc["densities"][Hi]
+>>>>>>> 726e8b751aa1580ebda3e781eb754f643e8554f7
 
               exposant = 1
-              if list_type[i] == "unaire":
+              if list_type[it] == "unaire":
                   exposant = 0
               volr = vol **exposant
-              sig+= list_sigr[i] / volr * prod
+              sig+= list_sigr[it] / volr * prod
 
           #tirage du temps de la prochaine reaction
-          U = random.random()
+          Urand = random.random()
           tau = 1.e32
           if sig > 0.:
-              tau = - log(U) / sig
+              tau = - log(Urand) / sig
 
           # temps courant updaté
           tps_cur += tau
@@ -100,32 +112,45 @@ while tps < temps_final:
           if tps_cur > dt:
               #census
               tps_cur = dt
-              for c in compos:
-                  eta[c] += pmc["densities"][c] * pmc["weight"]
+              for ci in compos:
+                  eta[ci] += pmc["densities"][ci] * pmc["weight"]
 
           else:
-              #reaction
-              U = random.random()
+            # Fonction de tirages de réactions:
+            def reaction(list_reac, h, list_type, list_sigr, sig):
+                U = random.random()
 
+<<<<<<< HEAD
               reac = len(list_reac)-1
               proba = 0.
               for i in range(len(list_reac)-1):
                   prod = 1.
                   for H in list_comp[i]:
                       prod *= pmc["densities"][H]
+=======
+                reac = len(list_reac)-1
+                proba = 0.
+                for i in range(len(list_reac)-1):
+                    prod = 1.
+                    for H in h[i]:
+                        prod *= pmc["densities"][H]
+>>>>>>> 726e8b751aa1580ebda3e781eb754f643e8554f7
 
-                  exposant = 1
-                  if list_type[i] == "unaire":
-                      exposant = 0
-                  volr = vol **exposant
-                  proba+= list_sigr[i] / volr * prod
+                    exposant = 1
+                    if list_type[i] == "unaire":
+                        exposant = 0
+                    volr = vol **exposant
+                    proba+= list_sigr[i] / volr * prod
 
-                  if U * sig < proba:
-                      reac = i
-                      break
+                    if U * sig < proba:
+                        reac = i
+                        break
 
-              for c in compos:
-                  pmc["densities"][c]+=nu[reac][c]
+                return reac
+
+            reac = reaction(list_reac, h, list_type, list_sigr, sig) 
+            for c in compos:
+                  pmc["densities"][c]+=nu[reac][c]         
 
   tps+=dt
   cmdt=""+str(tps)+" "
@@ -142,12 +167,12 @@ output.close()
 
 if gnuplot:
     cmd_gnu="set sty da l;set grid; set xl 'time'; set yl 'densities of the species'; plot "
-    i=3
+    it=3
     cmd_gnu+="'rez.txt' lt 1 w lp  t '"+str(compos[0])+"'"
     for c in compos:
         if not(c==compos[0]):
-            cmd_gnu+=",'' u 1:"+str(i)+" lt "+str(i)+" w lp t '"+str(compos[i-2])+"'"
-            i+=1
+            cmd_gnu+=",'' u 1:"+str(it)+" lt "+str(it)+" w lp t '"+str(compos[it-2])+"'"
+            it+=1
 
     cmd_gnu+=";pause -1"
     output = open("gnu.plot",'w')
@@ -170,8 +195,8 @@ else:
     ax.set_ylabel('densities of the species')
     ax.grid(True)
     # Dessiner chaque colonne de données en tant que série distincte
-    for i, c in enumerate(compos):
-        ax.plot(data[:, 0], data[:, i+1], 'o-', label=c)
+    for it, c in enumerate(compos):
+        ax.plot(data[:, 0], data[:, it+1], 'o-', label=c)
 
     # Afficher la légende
     ax.legend(loc='best')
