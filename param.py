@@ -1,7 +1,7 @@
 #Type de plot : Gnuplot ou matplotlib
 gnuplot = False
 # PARAM: nb de particules MC
-Nmc=10
+Nmc=5
 # PARAM: Volume
 vol = 10.
 # PARAM: construction de la liste des temps d'intérêt
