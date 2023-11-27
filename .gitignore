@@ -1,0 +1,6 @@
+rez.txt
+gnu.plot
+param.py
+
+__pycache__/
+*.pyc
