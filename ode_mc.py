@@ -117,7 +117,7 @@ while tps < temps_final:
 
           else:
             # Fonction de tirages de réactions:
-            def reaction(list_reac, h, list_type, list_sigr, sig):
+            def reaction(list_reac, hn, list_type, list_sigr, sig):
                 U = random.random()
 
 <<<<<<< HEAD
@@ -132,7 +132,7 @@ while tps < temps_final:
                 proba = 0.
                 for i in range(len(list_reac)-1):
                     prod = 1.
-                    for H in h[i]:
+                    for H in hn[i]:
                         prod *= pmc["densities"][H]
 >>>>>>> 726e8b751aa1580ebda3e781eb754f643e8554f7
 
@@ -148,7 +148,7 @@ while tps < temps_final:
 
                 return reac
 
-            reac = reaction(list_reac, h, list_type, list_sigr, sig) 
+            reac = reaction(list_reac, hn, list_type, list_sigr, sig) 
             for c in compos:
                   pmc["densities"][c]+=nu[reac][c]         
 
