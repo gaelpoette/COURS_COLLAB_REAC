@@ -69,7 +69,7 @@ def vector_init(list_reac, list_type, vol):
 
     return eta, h, nu, compos
 
-
+##New function
 def pmc_init(Nmc, compos, eta):
     """création de la population de particules représentant la condition initiale"""
 
