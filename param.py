@@ -5,7 +5,7 @@ Nmc=10
 # PARAM: Volume
 vol = 10.
 # PARAM: construction de la liste des temps d'intérêt
-temps_final = 30
+temps_final = 20
 dt=1
 Nt = int(temps_final/dt)
 temps=[]
