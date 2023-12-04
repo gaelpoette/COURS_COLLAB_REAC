@@ -77,6 +77,8 @@ while tps < temps_final:
               exposant = 1
               if list_type[it] == "unaire":
                   exposant = 0
+              elif list_type[it] == "ternaire":
+                  exposant = 0
               volr = vol **exposant
               sig+= list_sigr[it] / volr * prod
 
@@ -111,6 +113,8 @@ while tps < temps_final:
                     exposant = 1
                     if list_type[i] == "unaire":
                         exposant = 0
+                    elif list_type[i] == "ternaire":
+                        exposant = 2
                     volr = vol **exposant
                     proba+= list_sigr[i] / volr * prod
 
