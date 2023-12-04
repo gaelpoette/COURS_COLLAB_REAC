@@ -35,6 +35,8 @@ def vector_init(list_reac, list_type, vol):
             h[i] = [compos_reac[0], compos_reac[1]]
         elif list_type[i] == "unaire":
             h[i] = [compos_reac[0]]
+        elif list_type[i] == "ternaire":
+            h[i] = [compos_reac[0], compos_reac[1], compos_reac[2]]
         else:
             print("type de reaction non reconnue")
             exit(2)
@@ -51,6 +53,8 @@ def vector_init(list_reac, list_type, vol):
                     isnum = (num == 0 or num == 1)
                 if list_type[i] == "unaire":
                     isnum = (num == 0)
+                if list_type[i] == "ternaire":
+                    isnum = (num == 0 or num == 1 or num == 2)
                 if c == cg and (isnum): #réactions à 2 réactifs
                     nu[i][cg] += -1.
                 if c == cg and (not isnum): #réactions à 2 réactifs
@@ -65,7 +69,7 @@ def vector_init(list_reac, list_type, vol):
 
     return eta, h, nu, compos
 
-
+##New function
 def pmc_init(Nmc, compos, eta):
     """création de la population de particules représentant la condition initiale"""
 

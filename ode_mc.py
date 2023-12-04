@@ -23,6 +23,8 @@ def tirage_expo():
        exposant = 1
        if list_type[it] == "unaire":
            exposant = 0
+       elif list_type[it] == "ternaire":
+           exposant = 2
        volr = vol **exposant
        sig+= list_sigr[it] / volr * prod
 
@@ -31,6 +33,7 @@ def tirage_expo():
    tau = 1.e32
    if sig > 0.:
        tau = - log(Urand) / sig
+
    return tau, sig
 
 random.seed(49)  # Fixe la graine à la valeur 42
@@ -115,6 +118,8 @@ while tps < temps_final:
                     exposant = 1
                     if list_type[i] == "unaire":
                         exposant = 0
+                    elif list_type[i] == "ternaire":
+                        exposant = 2
                     volr = vol **exposant
                     proba+= list_sigr[i] / volr * prod
 
