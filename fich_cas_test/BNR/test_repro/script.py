@@ -20,6 +20,7 @@ os.system("python3 ../../../ode_mc.py")
 os.system("cp rez.txt rez1.txt")
 os.system("python3 ../../../ode_mc.py")
 comparison_result = compare_files("rez.txt", "rez1.txt")
+print("\n----------\n" + comparison_result + "\n----------\n")
 
 #os.system("meld rez.txt rez1.txt")
 #os.system("diff rez.txt rez1.txt")
