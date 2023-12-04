@@ -12,6 +12,27 @@ import matplotlib.pyplot as plt
 import numpy as np
 from fonction import * 
 
+def tirage_expo():
+   # section efficace totale
+   sig = 0.
+   for it in range(len(list_reac)):
+       prod = 1.
+       for Hi in hn[it]:
+           prod *= pmc["densities"][Hi]
+
+       exposant = 1
+       if list_type[it] == "unaire":
+           exposant = 0
+       volr = vol **exposant
+       sig+= list_sigr[it] / volr * prod
+
+   #tirage du temps de la prochaine reaction
+   Urand = random.random()
+   tau = 1.e32
+   if sig > 0.:
+       tau = - log(Urand) / sig
+   return tau, sig
+
 random.seed(49)  # Fixe la graine à la valeur 42
 
 # importation des paramètres
@@ -67,24 +88,7 @@ while tps < temps_final:
 
       while tps_cur < dt:
 
-          # section efficace totale
-          sig = 0.
-          for it in range(len(list_reac)):
-              prod = 1.
-              for Hi in hn[it]:
-                  prod *= pmc["densities"][Hi]
-
-              exposant = 1
-              if list_type[it] == "unaire":
-                  exposant = 0
-              volr = vol **exposant
-              sig+= list_sigr[it] / volr * prod
-
-          #tirage du temps de la prochaine reaction
-          Urand = random.random()
-          tau = 1.e32
-          if sig > 0.:
-              tau = - log(Urand) / sig
+          tau, sig = tirage_expo()
 
           # temps courant updaté
           tps_cur += tau
