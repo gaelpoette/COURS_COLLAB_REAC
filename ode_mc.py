@@ -34,8 +34,22 @@ for i in range (len(list_sigr)):
 
 
 #"conditions initiales en eta codée en dur pour l'instant
+<<<<<<< HEAD
+eta={}
+for c in compos:
+    eta[c]=0.
+    if c=="Ar" or c=="e^-":
+      eta[c] = 1. * vol
+	
+print("conditions initiales des espèces")
+print(eta)
+
+# initialisation dess vecteurs list_comp et nu
+list_comp, nu = vector_init(list_reac, list_type, compos)
+=======
 # remlissage de compos et initialisation des vecteurs eta, h et nu
 eta, hn, nu, compos = vector_init(list_reac, list_type, vol)
+>>>>>>> 726e8b751aa1580ebda3e781eb754f643e8554f7
 
 # population de particules représentant la condition initiale
 PMC = pmc_init(Nmc, compos, eta)
@@ -71,8 +85,13 @@ while tps < temps_final:
           sig = 0.
           for it in range(len(list_reac)):
               prod = 1.
+<<<<<<< HEAD
+              for H in list_comp[i]:
+                  prod *= pmc["densities"][H]
+=======
               for Hi in hn[it]:
                   prod *= pmc["densities"][Hi]
+>>>>>>> 726e8b751aa1580ebda3e781eb754f643e8554f7
 
               exposant = 1
               if list_type[it] == "unaire":
@@ -101,12 +120,21 @@ while tps < temps_final:
             def reaction(list_reac, hn, list_type, list_sigr, sig):
                 U = random.random()
 
+<<<<<<< HEAD
+              reac = len(list_reac)-1
+              proba = 0.
+              for i in range(len(list_reac)-1):
+                  prod = 1.
+                  for H in list_comp[i]:
+                      prod *= pmc["densities"][H]
+=======
                 reac = len(list_reac)-1
                 proba = 0.
                 for i in range(len(list_reac)-1):
                     prod = 1.
                     for H in hn[i]:
                         prod *= pmc["densities"][H]
+>>>>>>> 726e8b751aa1580ebda3e781eb754f643e8554f7
 
                     exposant = 1
                     if list_type[i] == "unaire":
