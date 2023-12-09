@@ -8,12 +8,14 @@ import random
 import matplotlib.pyplot as plt
 import numpy as np
 
+
+print(" TEST REPRODUCTIBILITÉ ")
 def compare_files(file1, file2):
     with open(file1, 'r') as f1, open(file2, 'r') as f2:
         if f1.read() == f2.read():
-            return "The tests are identical"
+            return "The results are identical     : OK"
         else:
-            return "The tests are not identical"
+            return "The results are not identical : KO"
 
 os.system("cp param.py ../../..")
 os.system("python3 ../../../ode_mc.py")

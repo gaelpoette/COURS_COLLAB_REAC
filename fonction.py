@@ -1,3 +1,7 @@
+import random
+from math import *
+
+
 def vector_init(list_reac, list_type, vol):
     """ Fonction de remlissage de compos et d'initialisation des vecteurs eta, h et nu"""
 
@@ -83,3 +87,29 @@ def pmc_init(Nmc, compos, eta):
         PMC.append(pmc)
 
     return PMC
+
+def tirage_expo(list_reac, hn, pmc, list_type, vol, list_sigr):
+   # section efficace totale
+   sig = 0.
+   for it in range(len(list_reac)):
+       prod = 1.
+       for Hi in hn[it]:
+           prod *= pmc["densities"][Hi]
+
+       exposant = 1
+       if list_type[it] == "unaire":
+           exposant = 0
+       elif list_type[it] == "ternaire":
+           exposant = 2
+       volr = vol **exposant
+       sig+= list_sigr[it] / volr * prod
+
+   #tirage du temps de la prochaine reaction
+   Urand = random.random()
+   tau = 1.e32
+   if sig > 0.:
+       tau = - log(Urand) / sig
+
+   return tau, sig
+
+
