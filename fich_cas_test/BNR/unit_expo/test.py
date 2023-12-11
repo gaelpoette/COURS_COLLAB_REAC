@@ -16,6 +16,8 @@ from fonction import *
 from fonction import tirage_expo 
 print(" TEST TIRAGE EXPONENTIEL ")
 
+np.random.seed(0)
+
 eta, hn, nu, compos = vector_init(list_reac, list_type, vol)
 PMC = pmc_init(Nmc, compos, eta)
 TAU =[]
@@ -28,7 +30,7 @@ TAU = np.array(TAU)
 ref = np.random.exponential(1./sig, len(PMC))
 plt.hist(TAU,30, density = True, alpha = 0.5)
 plt.hist(ref,30, density = True, alpha = 0.5)
-plt.show()
+#plt.show()
 
 print(scipy.stats.kstest(TAU,ref))
 #recuperation de la p-value
