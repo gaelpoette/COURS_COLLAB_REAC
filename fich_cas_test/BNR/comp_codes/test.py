@@ -9,6 +9,15 @@ import matplotlib.pyplot as plt
 import numpy as np
 
 
+print("TEST COMP_CODES")
+def compare_files(file1, file2):
+    with open(file1, 'r') as f1, open(file2, 'r') as f2:
+        if f1.read() == f2.read():
+            return "The results are identical     : OK"
+        else:
+            return "The results are not identical : KO"
+
+
 os.system("cp param.py ../../..")
 os.system("python3 ../../../ode_mc.py")
 os.system("cp rez.txt rez_mc.txt")
@@ -26,4 +35,11 @@ output = open("gnu.plot",'w')
 output.write(cmd_gnu)
 output.close()
 
-os.system("gnuplot gnu.plot")
+compare_det = compare_files("ref_det.txt", "rez_det.txt")
+compare_mc = compare_files("ref_mc.txt", "rez_mc.txt")
+print("\n----------\n" + "For rez_det.txt : " + compare_det + "\n----------\n")
+print("\n----------\n" + "For rez_mc.txt : "+ compare_mc + "\n----------\n")
+
+# Tracé gnuplot si les fichiers sont différents
+if compare_det == "The results are not identical : KO" or compare_mc == "The results are not identical : KO":
+    os.system("gnuplot gnu.plot")
