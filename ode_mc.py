@@ -14,11 +14,13 @@ from fonction import *
 
 random.seed(49)  # Fixe la graine à la valeur 42
 
-# importation des paramètres
-if(sig_r_0<0 or sig_r_1<0 or sig_r_2<0):
-    #Lol... Celle là est marrante: et si on met plus de réactions? 
-    print("ATTENTION! Les constantes de reaction doivent etre positif")
-    exit(1)
+# Traiter le cas où les constantes de réaction sont négatives (Jabir)
+for i in range (len(list_sigr)):
+    if (list_sigr[i]<0):
+      print("ATTENTION! Les constantes de reaction doivent etre positif")
+      list_sigr[i]= abs(list_sigr[i])
+      exit(1)
+
 
 print("liste des reactions")
 print(list_reac)
