@@ -21,3 +21,7 @@ os.chdir("BNR/unit_expo")
 os.system("python3 test.py")
 os.chdir("../..")
 
+os.chdir("BNR/test_exception_sig_neg")
+os.system("python3 test.py")
+os.chdir("../..")
+
