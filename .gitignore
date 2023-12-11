@@ -4,3 +4,4 @@ fich_cas_test/BNR/test_repro/rez.txt
 *.pyc
 .vscode
 .DS_STORE
+__pycache__
