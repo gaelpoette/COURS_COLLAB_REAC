@@ -12,6 +12,8 @@ import sys
 import scipy
 sys.path.append('../../../')
 from fonction import *
+from scipy import stats
+
 
 from fonction import tirage_expo 
 print(" TEST TIRAGE EXPONENTIEL ")
@@ -31,6 +33,21 @@ ref = np.random.exponential(1./sig, len(PMC))
 plt.hist(TAU,30, density = True, alpha = 0.5)
 plt.hist(ref,30, density = True, alpha = 0.5)
 #plt.show()
+
+
+moyenne_ref=np.mean(ref)
+variance_ref=np.var(ref)
+ecart_type_ref = np.sqrt(variance_ref)
+intervalle_confiance = stats.norm.interval(0.92,moyenne_ref,ecart_type_ref) 
+#print("Intervalle de confiance à 92% pour X :", intervalle_confiance)
+
+
+is_TAU_within_confidence = (intervalle_confiance[0] <= TAU) & (TAU <= intervalle_confiance[1])
+
+pourcentage_dans_intervalle = np.mean(is_TAU_within_confidence) * 100
+
+print(f"Pourcentage des valeurs de TAU à l'intérieur de l'intervalle de confiance : {pourcentage_dans_intervalle}%")
+
 
 print(scipy.stats.kstest(TAU,ref))
 #recuperation de la p-value
